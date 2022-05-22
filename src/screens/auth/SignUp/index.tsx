@@ -1,11 +1,24 @@
-import React, { FC } from 'react';
-import { Text, ScrollView, StyleSheet, View, Alert } from 'react-native';
-import { Button, TextInput } from '../../../components';
-import { typography } from '../../../styles';
+import React, { FC, useCallback } from 'react';
+import {
+  Text,
+  StyleSheet,
+  View,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useMutation } from '@apollo/client';
+import RNLocation, { Location } from 'react-native-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Button, TextInput } from '../../../components';
+import { typography } from '../../../styles';
 import { AuthStackParamList, AuthStackRouteName } from '../../../types';
+import { useAuthContext } from '../../../context/auth.context';
+import { Apollo } from '../../../apollo';
+import { AsyncStorageKeys } from '../../../constants';
 
 const loginSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -27,6 +40,24 @@ type SignUpProps = NativeStackScreenProps<
 >;
 
 const SignUp: FC<SignUpProps> = ({ navigation }) => {
+  const { setIsLoggedIn, setUserData } = useAuthContext();
+
+  const [signUp] = useMutation(Apollo.mutations.signup, {
+    onCompleted(data) {
+      if (data.signup.accessToken) {
+        AsyncStorage.setItem(
+          AsyncStorageKeys.ACCESS_TOKEN,
+          data.signup.accessToken,
+        );
+        setIsLoggedIn(true);
+        setUserData(data.signup.user);
+      }
+    },
+    onError(error) {
+      Alert.alert(error.message);
+    },
+  });
+
   const { errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues: {
       firstName: '',
@@ -35,12 +66,66 @@ const SignUp: FC<SignUpProps> = ({ navigation }) => {
       password: '',
     },
     validationSchema: loginSchema,
-    onSubmit: values =>
-      Alert.alert(`Email: ${values.email}, Password: ${values.password}`),
+    onSubmit: async (values) => {
+      const location = await getLocation();
+
+      if (!location) {
+        return Alert.alert(
+          'We need to access your location in order to show relevant suggestions',
+        );
+      }
+
+      signUp({
+        variables: {
+          createUserInput: {
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            password: values.password,
+            location: {
+              latitude: location.latitude,
+              longitude: location.longitude,
+            },
+          },
+        },
+      });
+    },
   });
 
+  const getLocation = useCallback(async (): Promise<Location | null> => {
+    let permission = await RNLocation.checkPermission({
+      ios: 'whenInUse',
+      android: { detail: 'coarse' },
+    });
+
+    let location: Location | null;
+
+    if (!permission) {
+      permission = await RNLocation.requestPermission({
+        ios: 'whenInUse',
+        android: {
+          detail: 'coarse',
+          rationale: {
+            title: 'We need to access your permission',
+            message: 'We use your location to save it in your profile',
+            buttonPositive: 'OK',
+            buttonNegative: 'Cancel',
+          },
+        },
+      });
+
+      location = await RNLocation.getLatestLocation({ timeout: 100 });
+    } else {
+      location = await RNLocation.getLatestLocation({ timeout: 100 });
+    }
+
+    return location;
+  }, []);
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
       <Text style={styles.header}>Interchange.io</Text>
       <View style={styles.loginBox}>
         <Text style={styles.loginText}>Sign up now</Text>
@@ -98,7 +183,7 @@ const SignUp: FC<SignUpProps> = ({ navigation }) => {
         onPress={() => navigation.navigate(AuthStackRouteName.SignIn)}>
         Already have an account? Sign in
       </Text>
-    </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

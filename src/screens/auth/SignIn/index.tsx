@@ -1,11 +1,22 @@
 import React, { FC } from 'react';
-import { Text, ScrollView, StyleSheet, View, Alert } from 'react-native';
-import { Button, TextInput } from '../../../components';
-import { typography } from '../../../styles';
+import {
+  Text,
+  KeyboardAvoidingView,
+  StyleSheet,
+  View,
+  Alert,
+} from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Button, TextInput } from '../../../components';
+import { typography } from '../../../styles';
 import { AuthStackParamList, AuthStackRouteName } from '../../../types';
+import { useAuthContext } from '../../../context/auth.context';
+import { Apollo } from '../../../apollo';
+import { AsyncStorageKeys } from '../../../constants';
 
 const loginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -21,18 +32,40 @@ type SignInProps = NativeStackScreenProps<
 >;
 
 const SignIn: FC<SignInProps> = () => {
+  const { setIsLoggedIn, setUserData } = useAuthContext();
+
+  const [signIn] = useMutation(Apollo.mutations.signin, {
+    onCompleted(data) {
+      if (data.accessToken) {
+        AsyncStorage.setItem(AsyncStorageKeys.ACCESS_TOKEN, data.accessToken);
+        setIsLoggedIn(true);
+        setUserData(data.user);
+      }
+    },
+    onError(error) {
+      Alert.alert(error.message);
+    },
+  });
+
   const { errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues: {
       email: '',
       password: '',
     },
     validationSchema: loginSchema,
-    onSubmit: values =>
-      Alert.alert(`Email: ${values.email}, Password: ${values.password}`),
+    onSubmit: (values) =>
+      signIn({
+        variables: {
+          signInInput: {
+            email: values.email,
+            password: values.password,
+          },
+        },
+      }),
   });
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <KeyboardAvoidingView style={styles.container}>
       <Text style={styles.header}>Interchange.io</Text>
       <View style={styles.loginBox}>
         <Text style={styles.loginText}>Sign In</Text>
@@ -67,7 +100,7 @@ const SignIn: FC<SignInProps> = () => {
         </View>
         <Button label="Sign In" onPress={handleSubmit} />
       </View>
-    </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -8,6 +8,10 @@ export enum AuthStackRouteName {
   SignIn = 'SignIn',
 }
 
+export enum MainStackRouteName {
+  Maps = 'Maps',
+}
+
 export type RootStackParamList = {
   AuthNavigator: undefined;
   MainNavigator: undefined;
@@ -16,4 +20,8 @@ export type RootStackParamList = {
 export type AuthStackParamList = {
   SignUp: undefined;
   SignIn: undefined;
+};
+
+export type MainStackParamList = {
+  Maps: undefined;
 };
