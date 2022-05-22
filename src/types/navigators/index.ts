@@ -10,6 +10,9 @@ export enum AuthStackRouteName {
 
 export enum MainStackRouteName {
   Maps = 'Maps',
+  Items = 'Items',
+  New = 'New',
+  Profile = 'Profile',
 }
 
 export type RootStackParamList = {
@@ -24,4 +27,7 @@ export type AuthStackParamList = {
 
 export type MainStackParamList = {
   Maps: undefined;
+  Items: undefined;
+  New: undefined;
+  Profile: undefined;
 };
