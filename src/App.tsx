@@ -1,10 +1,13 @@
 import React, { FC } from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { enableLatestRenderer } from 'react-native-maps';
 import { AuthProvider } from './context/auth.context';
 import { Apollo } from './apollo';
 import { ApolloProvider } from '@apollo/client';
 import RootNavigator from './navigators/root';
 import { colors } from './styles';
+
+enableLatestRenderer();
 
 const App: FC = () => {
   return (

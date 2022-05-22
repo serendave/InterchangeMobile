@@ -6,6 +6,9 @@
 
 #import <React/RCTAppSetupUtils.h>
 
+#import "ReactNativeConfig.h"
+#import <GoogleMaps/GoogleMaps.h>
+
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTCxxBridgeDelegate.h>
@@ -29,6 +32,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  NSString *mapsKey = [ReactNativeConfig envFor:@"GOOGLE_MAPS_API_KEY"];
+  [GMSServices provideAPIKey:mapsKey];
   RCTAppSetupPrepareApp(application);
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];

@@ -8,6 +8,7 @@ import * as mutations from './mutations';
 // import * as queries from './queries';
 import { AsyncStorageKeys } from '../constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Config from 'react-native-config';
 
 type Apollo = {
   client: ApolloClient<any>;
@@ -31,7 +32,7 @@ const authLink = new ApolloLink((operation, forward) => {
 
 const link = ApolloLink.from([
   authLink,
-  new HttpLink({ uri: 'http://localhost:3000/graphql' }),
+  new HttpLink({ uri: `${Config.API_URL}/graphql` }),
 ]);
 
 const client = (() => {
