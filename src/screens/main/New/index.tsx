@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { useFormik } from 'formik';
 import { StyleSheet, View, Text, Platform } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Image } from 'react-native-image-crop-picker';
 import Toast from 'react-native-toast-message';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -10,7 +11,7 @@ import { Apollo } from '../../../apollo';
 import { Button, PhotosRow, TextInput } from '../../../components';
 import { axios } from '../../../utils';
 import { colors, typography } from '../../../styles';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+
 import { MainStackParamList, MainStackRouteName } from '../../../types';
 
 type NewProps = NativeStackScreenProps<

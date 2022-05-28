@@ -42,7 +42,7 @@ const SignIn: FC<SignInProps> = () => {
           data.signin.accessToken,
         );
         setIsLoggedIn(true);
-        setUserData(data.user);
+        setUserData(data.signin.user);
       }
     },
     onError(error) {

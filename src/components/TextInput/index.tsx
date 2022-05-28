@@ -15,10 +15,10 @@ type TextInputProps = RNTextInputProps & {
 
 const TextInput: FC<TextInputProps> = ({ error, touched, ...otherProps }) => {
   const validationColor = !touched
-    ? '#223e4b'
+    ? colors.border
     : error
     ? colors.error
-    : '#223e4b';
+    : colors.border;
 
   return (
     <>
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 48,
     borderRadius: 8,
-    borderColor: '#223e4b',
+    borderColor: colors.border,
     borderWidth: 0.7,
     padding: 8,
   },

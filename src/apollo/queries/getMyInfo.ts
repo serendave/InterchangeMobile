@@ -8,10 +8,9 @@ export const getMyInfo = gql`
       firstName
       lastName
       dateJoined
-      items {
-        id
-        name
-        description
+      location {
+        latitude
+        longitude
       }
     }
   }

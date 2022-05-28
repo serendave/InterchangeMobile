@@ -34,6 +34,9 @@ export const AuthProvider: FC = ({ children }) => {
   const [userData, setUserData] = useState<User>();
 
   const [getMyInfo] = useLazyQuery(Apollo.queries.getMyInfo, {
+    onCompleted(data) {
+      setUserData(data.getMyInfo);
+    },
     onError(error) {
       Alert.alert(error.message);
     },
