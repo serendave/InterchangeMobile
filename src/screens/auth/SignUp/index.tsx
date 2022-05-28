@@ -1,5 +1,6 @@
 import React, { FC, useCallback } from 'react';
 import {
+  Button as RNButton,
   Text,
   StyleSheet,
   View,
@@ -178,11 +179,12 @@ const SignUp: FC<SignUpProps> = ({ navigation }) => {
         </View>
         <Button label="Sign Up" onPress={handleSubmit} />
       </View>
-      <Text
-        style={styles.signinLink}
-        onPress={() => navigation.navigate(AuthStackRouteName.SignIn)}>
-        Already have an account? Sign in
-      </Text>
+      <View style={styles.signinLink}>
+        <RNButton
+          title="Already have an account? Sign in"
+          onPress={() => navigation.navigate(AuthStackRouteName.SignIn)}
+        />
+      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -214,7 +216,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   signinLink: {
-    color: '#3588e0',
+    fontSize: 18,
     marginBottom: 20,
   },
 });

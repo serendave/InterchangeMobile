@@ -2,9 +2,11 @@ import React, { FC } from 'react';
 import {
   TextInput as RNTextInput,
   TextInputProps as RNTextInputProps,
+  Text,
   View,
   StyleSheet,
 } from 'react-native';
+import { colors } from '../../styles';
 
 type TextInputProps = RNTextInputProps & {
   error?: string;
@@ -12,21 +14,28 @@ type TextInputProps = RNTextInputProps & {
 };
 
 const TextInput: FC<TextInputProps> = ({ error, touched, ...otherProps }) => {
-  const validationColor = !touched ? '#223e4b' : error ? '#FF5A5F' : '#223e4b';
+  const validationColor = !touched
+    ? '#223e4b'
+    : error
+    ? colors.error
+    : '#223e4b';
 
   return (
-    <View style={{ ...styles.container, borderColor: validationColor }}>
-      <View style={styles.icon}>
-        {/* <Icon name={icon} color={validationColor} size={16} /> */}
+    <>
+      <View style={{ ...styles.container, borderColor: validationColor }}>
+        {/* <View style={styles.icon}>
+        <Icon name={icon} color={validationColor} size={16} />
+      </View> */}
+        <View style={styles.textContainer}>
+          <RNTextInput
+            underlineColorAndroid="transparent"
+            placeholderTextColor="rgba(34, 62, 75, 0.7)"
+            {...otherProps}
+          />
+        </View>
       </View>
-      <View style={styles.textContainer}>
-        <RNTextInput
-          underlineColorAndroid="transparent"
-          placeholderTextColor="rgba(34, 62, 75, 0.7)"
-          {...otherProps}
-        />
-      </View>
-    </View>
+      {error ? <Text style={styles.error}>{error}</Text> : null}
+    </>
   );
 };
 
@@ -39,6 +48,11 @@ const styles = StyleSheet.create({
     borderColor: '#223e4b',
     borderWidth: 0.7,
     padding: 8,
+  },
+  error: {
+    fontSize: 10,
+    marginTop: 5,
+    color: colors.error,
   },
   icon: { padding: 8 },
   textContainer: { flex: 1 },

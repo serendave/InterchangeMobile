@@ -49,6 +49,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Interchange.io requires access to your gallery</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Interchange.io requires access your camera</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

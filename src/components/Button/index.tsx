@@ -5,16 +5,34 @@ import { colors } from '../../styles';
 type ButtonProps = {
   label: string;
   color?: string;
+  additionalStyles?: Record<string, any>;
+  uppercase?: boolean;
   onPress: () => void;
 };
 
-const Button: FC<ButtonProps> = ({ label, color, onPress }) => {
+const Button: FC<ButtonProps> = ({
+  additionalStyles,
+  uppercase = false,
+  label,
+  color,
+  onPress,
+}) => {
   return (
     <TouchableOpacity
-      style={{ ...styles.button, backgroundColor: color ?? colors.secondary }}
+      style={{
+        ...styles.button,
+        backgroundColor: color ?? colors.secondary,
+        ...additionalStyles,
+      }}
       activeOpacity={0.7}
       onPress={onPress}>
-      <Text style={styles.text}>{label}</Text>
+      <Text
+        style={{
+          ...styles.text,
+          textTransform: uppercase ? 'uppercase' : 'none',
+        }}>
+        {label}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -27,7 +45,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  text: { fontSize: 18, color: 'white', textTransform: 'uppercase' },
+  text: { fontSize: 18, color: 'white' },
 });
 
 export default Button;

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { enableLatestRenderer } from 'react-native-maps';
+import Toast from 'react-native-toast-message';
 import { AuthProvider } from './context/auth.context';
 import { Apollo } from './apollo';
 import { ApolloProvider } from '@apollo/client';
@@ -24,6 +25,7 @@ const App: FC = () => {
           <RootNavigator />
         </NavigationContainer>
       </AuthProvider>
+      <Toast />
     </ApolloProvider>
   );
 };

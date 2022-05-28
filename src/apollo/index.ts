@@ -1,11 +1,7 @@
-import {
-  ApolloClient,
-  ApolloLink,
-  HttpLink,
-  InMemoryCache,
-} from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import * as mutations from './mutations';
-// import * as queries from './queries';
+import * as queries from './queries';
 import { AsyncStorageKeys } from '../constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
@@ -16,28 +12,23 @@ type Apollo = {
   mutations: any;
 };
 
-const authLink = new ApolloLink((operation, forward) => {
-  operation.setContext(async (_: any, { headers }: any) => {
-    const token = await AsyncStorage.getItem(AsyncStorageKeys.ACCESS_TOKEN);
-    return {
-      headers: {
-        ...headers,
-        authorization: token ? `Bearer ${token}` : '',
-      },
-    };
-  });
-
-  return forward(operation);
+const httpLink = createHttpLink({
+  uri: `${Config.API_URL}/graphql`,
 });
 
-const link = ApolloLink.from([
-  authLink,
-  new HttpLink({ uri: `${Config.API_URL}/graphql` }),
-]);
+const authLink = setContext(async (_, { headers }) => {
+  const token = await AsyncStorage.getItem(AsyncStorageKeys.ACCESS_TOKEN);
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
 
 const client = (() => {
   return new ApolloClient({
-    link,
+    link: authLink.concat(httpLink),
     defaultOptions: { watchQuery: { fetchPolicy: 'cache-and-network' } },
     cache: new InMemoryCache(),
   });
@@ -46,7 +37,7 @@ const client = (() => {
 const Apollo = {
   client,
   mutations,
-  // queries,
+  queries,
 };
 
 export { Apollo };

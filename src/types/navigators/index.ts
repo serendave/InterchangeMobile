@@ -1,3 +1,5 @@
+import { ImageType } from '../common';
+
 export enum RootStackRouteName {
   AuthNavigator = 'AuthNavigator',
   MainNavigator = 'MainNavigator',
@@ -30,4 +32,14 @@ export type MainStackParamList = {
   Items: undefined;
   New: undefined;
   Profile: undefined;
+};
+
+export type CommonScreensParamList = {
+  Gallery: {
+    images: ImageType[];
+    position?: number;
+    updateImageArray?: (array: ImageType[]) => void;
+    title?: string;
+    bgColor?: string;
+  };
 };

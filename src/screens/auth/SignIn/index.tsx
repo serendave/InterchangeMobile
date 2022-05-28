@@ -36,8 +36,11 @@ const SignIn: FC<SignInProps> = () => {
 
   const [signIn] = useMutation(Apollo.mutations.signin, {
     onCompleted(data) {
-      if (data.accessToken) {
-        AsyncStorage.setItem(AsyncStorageKeys.ACCESS_TOKEN, data.accessToken);
+      if (data.signin.accessToken) {
+        AsyncStorage.setItem(
+          AsyncStorageKeys.ACCESS_TOKEN,
+          data.signin.accessToken,
+        );
         setIsLoggedIn(true);
         setUserData(data.user);
       }
