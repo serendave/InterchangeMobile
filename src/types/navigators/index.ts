@@ -1,3 +1,4 @@
+import { NavigatorScreenParams } from '@react-navigation/native';
 import { ImageType } from '../common';
 
 export enum RootStackRouteName {
@@ -11,15 +12,28 @@ export enum AuthStackRouteName {
 }
 
 export enum MainStackRouteName {
-  Maps = 'Maps',
-  Items = 'Items',
+  MapsNavigator = 'MapsNavigator',
+  ItemsNavigator = 'ItemsNavigator',
   New = 'New',
+  ProfileNavigator = 'ProfileNavigator',
+}
+
+export enum MapsStackRouteName {
+  Maps = 'Maps',
+  EventDetails = 'EventDetails',
+}
+
+export enum ProfileStackRouteName {
   Profile = 'Profile',
+  UserInfo = 'UserInfo',
+  MyItems = 'MyItems',
+  MyEvents = 'MyEvents',
+  EventDetails = 'EventDetails',
 }
 
 export type RootStackParamList = {
-  AuthNavigator: undefined;
-  MainNavigator: undefined;
+  AuthNavigator: NavigatorScreenParams<AuthStackParamList>;
+  MainNavigator: NavigatorScreenParams<MainStackParamList>;
 };
 
 export type AuthStackParamList = {
@@ -28,10 +42,23 @@ export type AuthStackParamList = {
 };
 
 export type MainStackParamList = {
-  Maps: undefined;
-  Items: undefined;
+  MapsNavigator: NavigatorScreenParams<MapsStackParamList>;
+  ItemsNavigator: undefined;
   New: undefined;
+  ProfileNavigator: NavigatorScreenParams<ProfileStackParamList>;
+};
+
+export type MapsStackParamList = {
+  Maps: undefined;
+  EventDetails: { id: string };
+};
+
+export type ProfileStackParamList = {
   Profile: undefined;
+  UserInfo: undefined;
+  MyItems: undefined;
+  MyEvents: undefined;
+  EventDetails: { id: string };
 };
 
 export type CommonScreensParamList = {

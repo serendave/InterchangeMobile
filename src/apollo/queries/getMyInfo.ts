@@ -8,6 +8,7 @@ export const getMyInfo = gql`
       firstName
       lastName
       dateJoined
+      photo
       location {
         latitude
         longitude
