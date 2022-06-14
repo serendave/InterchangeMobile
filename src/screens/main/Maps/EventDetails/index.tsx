@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useMutation, useQuery } from '@apollo/client';
@@ -65,6 +65,18 @@ const EventDetails: FC<EventDetailsProps> = ({ route, navigation }) => {
     });
   };
 
+  const addFriendHandler = () => {
+    navigation.navigate(MapsStackRouteName.AddFriend, { id });
+  };
+
+  const hasUserAlreadyJoined = useMemo(
+    () =>
+      eventData?.event.visitors.some(
+        (visitor: any) => visitor.id === userData?.id,
+      ),
+    [eventData, userData],
+  );
+
   return (
     <FlatList
       style={styles.container}
@@ -92,7 +104,11 @@ const EventDetails: FC<EventDetailsProps> = ({ route, navigation }) => {
       }
       ListFooterComponent={
         <View style={styles.joinEvent}>
-          <Button label="Join event" onPress={joinEventHandler} />
+          {hasUserAlreadyJoined ? (
+            <Button label="Invite friend" onPress={addFriendHandler} />
+          ) : (
+            <Button label="Join event" onPress={joinEventHandler} />
+          )}
         </View>
       }
       renderItem={({ item }) => (
@@ -105,10 +121,13 @@ const EventDetails: FC<EventDetailsProps> = ({ route, navigation }) => {
                 : DEFAULT_PHOTO,
             }}
           />
-          <View>
+          <View style={styles.visitorInitials}>
             <Text style={styles.visitorInfo}>{item.firstName}</Text>
             <Text style={styles.visitorInfo}>{item.lastName}</Text>
           </View>
+          {item.id === userData?.id ? (
+            <Text style={styles.visitorYourself}>You</Text>
+          ) : null}
         </View>
       )}
     />
@@ -159,8 +178,14 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 15,
   },
+  visitorInitials: {
+    flex: 1,
+  },
   visitorInfo: {
     fontSize: 16,
+  },
+  visitorYourself: {
+    marginRight: 10,
   },
   joinEvent: {
     padding: 20,

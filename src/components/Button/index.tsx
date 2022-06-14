@@ -1,17 +1,24 @@
 import React, { FC } from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import {
+  ButtonProps as RNButtonProps,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+} from 'react-native';
 import { colors } from '../../styles';
 
-type ButtonProps = {
+type ButtonProps = Omit<RNButtonProps, 'title'> & {
   label: string;
   color?: string;
-  additionalStyles?: Record<string, any>;
+  buttonStyles?: Record<string, any>;
+  textStyles?: Record<string, any>;
   uppercase?: boolean;
-  onPress: () => void;
+  onPress?: () => void;
 };
 
 const Button: FC<ButtonProps> = ({
-  additionalStyles,
+  buttonStyles,
+  textStyles,
   uppercase = false,
   label,
   color,
@@ -22,7 +29,7 @@ const Button: FC<ButtonProps> = ({
       style={{
         ...styles.button,
         backgroundColor: color ?? colors.secondary,
-        ...additionalStyles,
+        ...buttonStyles,
       }}
       activeOpacity={0.7}
       onPress={onPress}>
@@ -30,6 +37,7 @@ const Button: FC<ButtonProps> = ({
         style={{
           ...styles.text,
           textTransform: uppercase ? 'uppercase' : 'none',
+          ...textStyles,
         }}>
         {label}
       </Text>

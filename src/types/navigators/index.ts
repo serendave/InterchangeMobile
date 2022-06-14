@@ -21,6 +21,12 @@ export enum MainStackRouteName {
 export enum MapsStackRouteName {
   Maps = 'Maps',
   EventDetails = 'EventDetails',
+  AddFriend = 'AddFriend',
+}
+
+export enum ItemStackRouteName {
+  ItemsList = 'ItemsList',
+  ItemDetails = 'ItemDetails',
 }
 
 export enum ProfileStackRouteName {
@@ -43,7 +49,7 @@ export type AuthStackParamList = {
 
 export type MainStackParamList = {
   MapsNavigator: NavigatorScreenParams<MapsStackParamList>;
-  ItemsNavigator: undefined;
+  ItemsNavigator: NavigatorScreenParams<ItemStackParamList>;
   New: undefined;
   ProfileNavigator: NavigatorScreenParams<ProfileStackParamList>;
 };
@@ -51,6 +57,12 @@ export type MainStackParamList = {
 export type MapsStackParamList = {
   Maps: undefined;
   EventDetails: { id: string };
+  AddFriend: { id: string };
+};
+
+export type ItemStackParamList = {
+  ItemsList: undefined;
+  ItemDetails: { id: string };
 };
 
 export type ProfileStackParamList = {

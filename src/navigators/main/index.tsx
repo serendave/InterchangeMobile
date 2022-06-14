@@ -2,10 +2,11 @@ import React, { FC } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MainStackParamList, MainStackRouteName } from '../../types';
 import { colors } from '../../styles';
-import { Items, New } from '../../screens';
+import { New } from '../../screens';
 import Icon from 'react-native-vector-icons/Entypo';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapsNavigator from './maps';
+import ItemsNavigator from './items';
 import ProfileNavigator from './profile';
 
 const MainStack = createBottomTabNavigator<MainStackParamList>();
@@ -44,8 +45,8 @@ const MainNavigator: FC = () => {
       />
       <MainStack.Screen
         name={MainStackRouteName.ItemsNavigator}
-        component={Items}
-        options={{ title: 'Items' }}
+        component={ItemsNavigator}
+        options={{ title: 'Items', headerShown: false }}
       />
       <MainStack.Screen
         name={MainStackRouteName.New}

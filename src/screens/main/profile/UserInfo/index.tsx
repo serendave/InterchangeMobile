@@ -17,7 +17,7 @@ const UserInfo = () => {
         <Text>Joined date: {userData?.dateJoined}</Text>
       </View>
       <Button
-        additionalStyles={styles.logoutButton}
+        buttonStyles={styles.logoutButton}
         label="Log out"
         onPress={logOut}
       />

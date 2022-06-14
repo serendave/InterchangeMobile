@@ -155,7 +155,7 @@ const New: FC<NewProps> = ({ navigation }) => {
         </View>
       </View>
       <Button
-        additionalStyles={styles.createBtn}
+        buttonStyles={styles.createBtn}
         label="Create item"
         onPress={handleSubmit}
       />

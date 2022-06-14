@@ -31,8 +31,6 @@ const MyEvents: FC<MyEventsProps> = ({ navigation }) => {
     },
   });
 
-  console.log(eventsData);
-
   return (
     <FlatList
       style={styles.container}

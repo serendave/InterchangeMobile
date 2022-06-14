@@ -42,7 +42,7 @@ const Profile = () => {
         </View>
       </ScrollView>
       <Button
-        additionalStyles={styles.logout}
+        buttonStyles={styles.logout}
         label="Log out"
         onPress={logOut}
       />

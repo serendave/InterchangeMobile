@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MapsStackParamList, MapsStackRouteName } from '../../../types';
-import { Maps } from '../../../screens';
-import { EventDetails } from '../../../screens/main/maps';
+import { EventDetails, Maps, AddFriend } from '../../../screens/main/maps';
 import { colors } from '../../../styles';
 
 const MapsStack = createNativeStackNavigator<MapsStackParamList>();
@@ -24,6 +23,10 @@ const MapsNavigator: FC = () => {
       <MapsStack.Screen
         name={MapsStackRouteName.EventDetails}
         component={EventDetails}
+      />
+      <MapsStack.Screen
+        name={MapsStackRouteName.AddFriend}
+        component={AddFriend}
       />
     </MapsStack.Navigator>
   );

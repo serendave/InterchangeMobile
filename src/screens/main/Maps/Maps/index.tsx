@@ -3,10 +3,9 @@ import React, { FC, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Region, Marker } from 'react-native-maps';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Dropdown } from 'react-native-element-dropdown';
 import { SwipeablePanel } from 'rn-swipeable-panel';
 import { Apollo } from '../../../../apollo';
-import { Button, TextInput } from '../../../../components';
+import { Button, TextInput, Dropdown } from '../../../../components';
 import { useAuthContext } from '../../../../context/auth.context';
 import { colors, typography } from '../../../../styles';
 import { MapsStackParamList, MapsStackRouteName } from '../../../../types';
@@ -64,9 +63,6 @@ const Maps: FC<MapsProps> = ({ navigation }) => {
               />
             </View>
             <Dropdown
-              style={styles.category}
-              placeholderStyle={styles.categoryPlaceholder}
-              selectedTextStyle={styles.categorySelectedText}
               onChange={() => {}}
               labelField="label"
               valueField="value"
@@ -96,7 +92,7 @@ const Maps: FC<MapsProps> = ({ navigation }) => {
           </View>
         </View>
         <Button
-          additionalStyles={styles.eventJoinBtn}
+          buttonStyles={styles.eventJoinBtn}
           label="Event details"
           onPress={() => {
             navigation.navigate(MapsStackRouteName.EventDetails, {
@@ -132,21 +128,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     flex: 2,
     marginRight: 10,
-  },
-  category: {
-    backgroundColor: colors.white,
-    flex: 1,
-    borderColor: colors.border,
-    borderWidth: 0.5,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-  },
-  categoryPlaceholder: {
-    fontSize: 14,
-    color: colors.gray,
-  },
-  categorySelectedText: {
-    fontSize: 14,
   },
   eventInfoBox: {
     padding: 20,
