@@ -9,14 +9,20 @@ import { Dropdown } from 'react-native-element-dropdown';
 import * as Yup from 'yup';
 import { Apollo } from '../../../apollo';
 import { Button, PhotosRow, TextInput } from '../../../components';
-import { axios } from '../../../utils';
+import Config from 'react-native-config';
 import { colors, typography } from '../../../styles';
 
-import { MainStackParamList, MainStackRouteName } from '../../../types';
-
-type NewProps = NativeStackScreenProps<
+import {
   MainStackParamList,
-  MainStackRouteName.New
+  MainStackRouteName,
+  ProfileStackRouteName,
+} from '../../../types';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+
+type NewProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, MainStackRouteName.New>,
+  BottomTabScreenProps<MainStackParamList, MainStackRouteName.New>
 >;
 
 const newItemSchema = Yup.object().shape({
@@ -44,11 +50,15 @@ const New: FC<NewProps> = ({ navigation }) => {
       });
 
       try {
-        const response = await axios.post('/items/upload-images', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
+        const rawResponse = await fetch(
+          `${Config.API_URL}/api/items/upload-images`,
+          {
+            method: 'POST',
+            body: formData,
           },
-        });
+        );
+
+        const response = await rawResponse.json();
 
         if ((response.status = 201)) {
           Toast.show({
@@ -57,14 +67,19 @@ const New: FC<NewProps> = ({ navigation }) => {
           });
 
           resetForm();
-          navigation.navigate(MainStackRouteName.Profile);
+          navigation.navigate(MainStackRouteName.ProfileNavigator, {
+            screen: ProfileStackRouteName.Profile,
+          });
         }
       } catch (e) {
         console.log(e);
       }
     },
     onError(data) {
-      console.log(data);
+      Toast.show({
+        type: 'error',
+        text1: JSON.stringify(data),
+      });
     },
   });
 

@@ -8,8 +8,6 @@ type ItemProps = {
 };
 
 const Item: FC<ItemProps> = ({ data }) => {
-  console.log(data.photos);
-
   return (
     <View style={styles.itemBox} key={data.id}>
       <View style={styles.itemInfo}>

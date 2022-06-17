@@ -5,7 +5,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import Config from 'react-native-config';
 import Toast from 'react-native-toast-message';
 import { Apollo } from '../../../../apollo';
-import { Button, PhotosRow } from '../../../../components';
+import { Button } from '../../../../components';
 import { colors, typography } from '../../../../styles';
 import {
   MainStackParamList,
@@ -88,12 +88,25 @@ const EventDetails: FC<EventDetailsProps> = ({ route, navigation }) => {
             Creator: {eventData?.event.creator.firstName}{' '}
             {eventData?.event.creator.lastName}
           </Text>
-          <PhotosRow data={[]} />
+          <View style={styles.imagesBox}>
+            {eventData?.event.photos?.map((photo: string, i: number) => (
+              <Image
+                key={i}
+                style={{
+                  ...styles.eventImage,
+                  marginRight:
+                    i !== eventData?.event.photos.length - 1 ? 20 : 0,
+                }}
+                source={{ uri: `${Config.IMAGES_URL}/${photo}` }}
+              />
+            ))}
+          </View>
           <View style={styles.descriptionBox}>
             <Text style={styles.description}>
               {eventData?.event.description}
             </Text>
           </View>
+          <Text style={styles.address}>{eventData?.event.address}</Text>
           <Text style={styles.participantsTitle}>Participants:</Text>
         </View>
       }
@@ -111,8 +124,8 @@ const EventDetails: FC<EventDetailsProps> = ({ route, navigation }) => {
           )}
         </View>
       }
-      renderItem={({ item }) => (
-        <View style={styles.visitorsBox}>
+      renderItem={({ item, index }) => (
+        <View style={styles.visitorsBox} key={index}>
           <Image
             style={styles.visitorPhoto}
             source={{
@@ -197,6 +210,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingVertical: 10,
     marginLeft: 5,
+  },
+  address: {
+    marginBottom: 15,
+  },
+  eventImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+  },
+  imagesBox: {
+    flexDirection: 'row',
   },
 });
 

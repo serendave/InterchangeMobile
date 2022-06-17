@@ -22,6 +22,7 @@ export enum MapsStackRouteName {
   Maps = 'Maps',
   EventDetails = 'EventDetails',
   AddFriend = 'AddFriend',
+  CreateEvent = 'CreateEvent',
 }
 
 export enum ItemStackRouteName {
@@ -35,6 +36,7 @@ export enum ProfileStackRouteName {
   MyItems = 'MyItems',
   MyEvents = 'MyEvents',
   EventDetails = 'EventDetails',
+  Invitations = 'Invitations',
 }
 
 export type RootStackParamList = {
@@ -58,6 +60,7 @@ export type MapsStackParamList = {
   Maps: undefined;
   EventDetails: { id: string };
   AddFriend: { id: string };
+  CreateEvent: undefined;
 };
 
 export type ItemStackParamList = {
@@ -71,6 +74,7 @@ export type ProfileStackParamList = {
   MyItems: undefined;
   MyEvents: undefined;
   EventDetails: { id: string };
+  Invitations: undefined;
 };
 
 export type CommonScreensParamList = {

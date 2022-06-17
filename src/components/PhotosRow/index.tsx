@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
 import { PhotoImages } from '../../assets/photos';
 import { selectImage } from '../../utils/cameraUtils';
 import DisplayImage from './DisplayImage';
 import { Image } from 'react-native-image-crop-picker';
-// import { ItemStackRouteName } from '../../types/Navigators';
 
 type Props = {
   data: Image[];
@@ -13,17 +11,8 @@ type Props = {
 };
 
 const PhotosRow: React.FunctionComponent<Props> = (props) => {
-  // const navigation = useNavigation();
   const { data, setData } = props;
   const [imagesArray, setImagesArray] = useState<Image[]>(data);
-
-  // const openGallery = (position: number) => {
-  //   navigation.navigate(ItemStackRouteName.Gallery, {
-  //     position: position,
-  //     images: imagesArray,
-  //     updateImageArray: (arr) => setImagesArray([...arr]),
-  //   });
-  // };
 
   const ImageBox = ({ position }: { position: number }) => {
     if (position === 0 && !imagesArray[0]) {

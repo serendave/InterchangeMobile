@@ -1,3 +1,4 @@
+export { default as Invitations } from './Invitations';
 export { default as MyEvents } from './MyEvents';
 export { default as MyItems } from './MyItems';
 export { default as Profile } from './Profile';

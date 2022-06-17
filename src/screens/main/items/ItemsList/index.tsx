@@ -25,7 +25,7 @@ type ItemsListProps = NativeStackScreenProps<
 
 const sortValues = ['Name', 'Date'];
 
-const ItemsList: FC<ItemsListProps> = () => {
+const ItemsList: FC<ItemsListProps> = ({ navigation }) => {
   const { data: itemsData, refetch: getItems } = useQuery(Apollo.queries.items);
   const { data: categoriesData } = useQuery(Apollo.queries.categories);
 
@@ -105,7 +105,16 @@ const ItemsList: FC<ItemsListProps> = () => {
           </View>
         }
         data={itemsData?.items ?? []}
-        renderItem={({ item, index }) => <Item key={index} data={item} />}
+        renderItem={({ item, index }) => (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(ItemStackRouteName.ItemDetails, {
+                id: item.id,
+              });
+            }}>
+            <Item key={index} data={item} />
+          </TouchableOpacity>
+        )}
       />
       <SwipeablePanel
         fullWidth

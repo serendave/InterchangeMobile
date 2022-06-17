@@ -1,32 +1,32 @@
 import React, { FC } from 'react';
-import { useQuery } from '@apollo/client';
-import { Button, Text, StyleSheet, FlatList, View } from 'react-native';
-import { CompositeScreenProps } from '@react-navigation/native';
+import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Apollo } from '../../../../apollo';
-import { colors, typography } from '../../../../styles';
 import { useAuthContext } from '../../../../context/auth.context';
+import { typography, colors } from '../../../../styles';
 import {
+  ProfileStackParamList,
+  ProfileStackRouteName,
   MainStackParamList,
   MainStackRouteName,
   MapsStackRouteName,
-  ProfileStackParamList,
-  ProfileStackRouteName,
 } from '../../../../types';
+import { useQuery } from '@apollo/client';
+import { Apollo } from '../../../../apollo';
 
-type MyEventsProps = CompositeScreenProps<
+type InvitationsProps = CompositeScreenProps<
   NativeStackScreenProps<ProfileStackParamList, ProfileStackRouteName.MyEvents>,
   BottomTabScreenProps<MainStackParamList, MainStackRouteName.ProfileNavigator>
 >;
 
-const MyEvents: FC<MyEventsProps> = ({ navigation }) => {
+const Invitations: FC<InvitationsProps> = ({ navigation }) => {
   const { userData } = useAuthContext();
 
-  const { data: eventsData } = useQuery(Apollo.queries.events, {
+  const { data: invitesData } = useQuery(Apollo.queries.invites, {
     variables: {
-      getEventsInput: {
-        visitorId: userData?.id,
+      getInvitesInput: {
+        userId: userData?.id,
       },
     },
   });
@@ -34,19 +34,19 @@ const MyEvents: FC<MyEventsProps> = ({ navigation }) => {
   return (
     <FlatList
       style={styles.container}
-      ListHeaderComponent={<Text style={styles.eventsTitle}>My Events</Text>}
+      ListHeaderComponent={<Text style={styles.title}>Invitations</Text>}
       ListEmptyComponent={<Text>You have no upcoming events</Text>}
-      data={eventsData?.events || []}
+      data={invitesData?.invites || []}
       renderItem={({ item, index }) => (
         <View
-          style={{ ...styles.eventsBox, borderTopWidth: index === 0 ? 1 : 0 }}
+          style={{ ...styles.invitesBox, borderTopWidth: index === 0 ? 1 : 0 }}
           key={item.id}>
-          <View style={styles.eventInfo}>
-            <Text style={styles.eventName}>{item.name}</Text>
-            <Text style={styles.eventDescription}>
-              {item.description.length > 40
-                ? `${item.description.slice(0, 40)}...`
-                : item.description}
+          <View style={styles.inviteInfo}>
+            <Text style={styles.inviteName}>{item.event.name}</Text>
+            <Text style={styles.inviteDescription}>
+              {item.event.description.length > 40
+                ? `${item.event.description.slice(0, 40)}...`
+                : item.event.description}
             </Text>
           </View>
           <Button
@@ -54,7 +54,7 @@ const MyEvents: FC<MyEventsProps> = ({ navigation }) => {
             onPress={() => {
               navigation.navigate(MainStackRouteName.MapsNavigator, {
                 screen: MapsStackRouteName.EventDetails,
-                params: { id: item.id ?? '' },
+                params: { id: item.event.id ?? '' },
               });
             }}
           />
@@ -64,16 +64,18 @@ const MyEvents: FC<MyEventsProps> = ({ navigation }) => {
   );
 };
 
+export default Invitations;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
   },
-  eventsTitle: {
+  title: {
     fontSize: typography.h2,
     marginBottom: 10,
   },
-  eventsBox: {
+  invitesBox: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -81,17 +83,15 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderBottomWidth: 1,
   },
-  eventInfo: {
+  inviteInfo: {
     flex: 1,
   },
-  eventName: {
+  inviteName: {
     fontSize: 18,
     marginBottom: 5,
   },
-  eventDescription: {
+  inviteDescription: {
     fontSize: 10,
     color: colors.darkGray,
   },
 });
-
-export default MyEvents;

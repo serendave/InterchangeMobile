@@ -1,11 +1,12 @@
 import { useQuery } from '@apollo/client';
 import React, { FC, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Region, Marker } from 'react-native-maps';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SwipeablePanel } from 'rn-swipeable-panel';
+import Icon from 'react-native-vector-icons/AntDesign';
 import { Apollo } from '../../../../apollo';
-import { Button, TextInput, Dropdown } from '../../../../components';
+import { Button, TextInput } from '../../../../components';
 import { useAuthContext } from '../../../../context/auth.context';
 import { colors, typography } from '../../../../styles';
 import { MapsStackParamList, MapsStackRouteName } from '../../../../types';
@@ -62,13 +63,12 @@ const Maps: FC<MapsProps> = ({ navigation }) => {
                 autoCapitalize="none"
               />
             </View>
-            <Dropdown
-              onChange={() => {}}
-              labelField="label"
-              valueField="value"
-              data={[{ label: '1', value: '1' }]}
-            />
           </View>
+          <TouchableOpacity
+            style={styles.addEvent}
+            onPress={() => navigation.navigate(MapsStackRouteName.CreateEvent)}>
+            <Icon name="plus" size={30} color={colors.darkGray} />
+          </TouchableOpacity>
         </>
       ) : null}
       <SwipeablePanel
@@ -153,6 +153,17 @@ const styles = StyleSheet.create({
   },
   eventJoinBtn: {
     alignSelf: 'center',
+  },
+  addEvent: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: colors.white,
+    borderRadius: 100,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

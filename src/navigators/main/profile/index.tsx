@@ -2,7 +2,13 @@ import React, { FC } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ProfileStackParamList, ProfileStackRouteName } from '../../../types';
 import { colors } from '../../../styles';
-import { MyEvents, MyItems, Profile, UserInfo } from '../../../screens';
+import {
+  Invitations,
+  MyEvents,
+  MyItems,
+  Profile,
+  UserInfo,
+} from '../../../screens';
 
 const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
 
@@ -34,6 +40,10 @@ const ProfileNavigator: FC = () => {
       <ProfileStack.Screen
         name={ProfileStackRouteName.MyEvents}
         component={MyEvents}
+      />
+      <ProfileStack.Screen
+        name={ProfileStackRouteName.Invitations}
+        component={Invitations}
       />
     </ProfileStack.Navigator>
   );

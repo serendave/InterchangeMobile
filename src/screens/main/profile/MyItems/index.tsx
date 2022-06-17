@@ -22,6 +22,7 @@ const MyItems: FC = () => {
       style={styles.container}
       data={itemsData?.items || []}
       ListHeaderComponent={<Text style={styles.itemsTitle}>My Items</Text>}
+      ListEmptyComponent={<Text>You have no upcoming events</Text>}
       renderItem={({ item, index }) => <Item key={index} data={item} />}
     />
   );

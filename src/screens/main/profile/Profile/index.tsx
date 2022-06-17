@@ -40,12 +40,16 @@ const Profile = () => {
           </Link>
           <Icon name="right" size={15} />
         </View>
+        <View style={styles.profileItem}>
+          <Link
+            style={styles.link}
+            to={`/${ProfileStackRouteName.Invitations}`}>
+            Invitations
+          </Link>
+          <Icon name="right" size={15} />
+        </View>
       </ScrollView>
-      <Button
-        buttonStyles={styles.logout}
-        label="Log out"
-        onPress={logOut}
-      />
+      <Button buttonStyles={styles.logout} label="Log out" onPress={logOut} />
     </View>
   );
 };

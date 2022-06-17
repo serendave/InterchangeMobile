@@ -11,6 +11,8 @@ export const getEvent = gql`
         latitude
         longitude
       }
+      photos
+      address
       creator {
         id
         firstName

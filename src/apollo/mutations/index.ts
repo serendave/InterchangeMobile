@@ -1,3 +1,4 @@
+export { createEvent } from './createEvent';
 export { createItem } from './createItem';
 export { createInvite } from './createInvite';
 export { joinEvent } from './joinEvent';

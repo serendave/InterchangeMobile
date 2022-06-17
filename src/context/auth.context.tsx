@@ -19,6 +19,7 @@ interface IAuthContext {
   setUserData: (user: User) => void;
   setIsLoggedIn: (value: boolean) => void;
   logOut: () => void;
+  login: () => void;
 }
 
 export const AuthContext = createContext<IAuthContext>({
@@ -27,6 +28,7 @@ export const AuthContext = createContext<IAuthContext>({
   setUserData: () => {},
   setIsLoggedIn: () => {},
   logOut: () => {},
+  login: () => {},
 });
 
 export const AuthProvider: FC = ({ children }) => {
@@ -47,7 +49,7 @@ export const AuthProvider: FC = ({ children }) => {
     setIsLoggedIn(false);
   }, [setIsLoggedIn]);
 
-  useEffect(() => {
+  const login = useCallback(() => {
     AsyncStorage.getItem(AsyncStorageKeys.ACCESS_TOKEN).then((token) => {
       setIsLoggedIn(!!token);
 
@@ -57,6 +59,8 @@ export const AuthProvider: FC = ({ children }) => {
     });
   }, [getMyInfo]);
 
+  useEffect(() => login(), [login]);
+
   return (
     <AuthContext.Provider
       value={{
@@ -65,6 +69,7 @@ export const AuthProvider: FC = ({ children }) => {
         setIsLoggedIn,
         setUserData,
         logOut,
+        login,
       }}>
       {children}
     </AuthContext.Provider>
