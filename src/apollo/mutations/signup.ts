@@ -9,6 +9,12 @@ export const signup = gql`
         email
         firstName
         lastName
+        dateJoined
+        photo
+        location {
+          latitude
+          longitude
+        }
       }
     }
   }

@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Region, Marker } from 'react-native-maps';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -10,6 +10,7 @@ import { Button, TextInput } from '../../../../components';
 import { useAuthContext } from '../../../../context/auth.context';
 import { colors, typography } from '../../../../styles';
 import { MapsStackParamList, MapsStackRouteName } from '../../../../types';
+import { useDebounce } from 'use-debounce';
 
 let eventData: any;
 
@@ -22,8 +23,18 @@ const Maps: FC<MapsProps> = ({ navigation }) => {
   const { userData } = useAuthContext();
   const [, setRegion] = useState<Region>();
   const [panelOpen, setPanelOpen] = useState<boolean>(false);
+  const [searchEventsText, setSearchEventsText] = useState<string>();
+  const [debouncedSearchEventsText] = useDebounce(searchEventsText, 1000);
 
-  const { data: eventsData } = useQuery(Apollo.queries.events);
+  const { data: eventsData, refetch: searchEvents } = useQuery(
+    Apollo.queries.events,
+  );
+
+  useEffect(() => {
+    if (debouncedSearchEventsText) {
+      searchEvents({ getEventsInput: { name: debouncedSearchEventsText } });
+    }
+  }, [debouncedSearchEventsText, searchEvents]);
 
   return (
     <View style={styles.container}>
@@ -60,6 +71,7 @@ const Maps: FC<MapsProps> = ({ navigation }) => {
             <View style={styles.search}>
               <TextInput
                 placeholder="Search events by name"
+                onChangeText={setSearchEventsText}
                 autoCapitalize="none"
               />
             </View>

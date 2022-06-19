@@ -41,8 +41,8 @@ const SignIn: FC<SignInProps> = () => {
           AsyncStorageKeys.ACCESS_TOKEN,
           data.signin.accessToken,
         );
-        setIsLoggedIn(true);
         setUserData(data.signin.user);
+        setIsLoggedIn(true);
       }
     },
     onError(error) {

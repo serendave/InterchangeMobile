@@ -6,6 +6,7 @@ import { Button } from '../../../../components';
 import { useAuthContext } from '../../../../context/auth.context';
 import { colors } from '../../../../styles';
 import { ProfileStackRouteName } from '../../../../types';
+import { DEFAULT_PHOTO } from '../../../../assets/img';
 
 const Profile = () => {
   const { userData, logOut } = useAuthContext();
@@ -13,7 +14,10 @@ const Profile = () => {
   return (
     <View style={styles.container}>
       <View style={styles.profileInfo}>
-        <Image style={styles.profilePhoto} source={{ uri: userData?.photo }} />
+        <Image
+          style={styles.profilePhoto}
+          source={{ uri: userData?.photo ?? DEFAULT_PHOTO }}
+        />
         <View>
           <Text style={styles.initials}>
             {userData?.firstName} {userData?.lastName}
